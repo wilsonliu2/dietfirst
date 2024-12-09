@@ -5,15 +5,15 @@ console.log("Meal Planner App Key:", process.env.EDAMAM_MP_APP_KEY);
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const authRoutes = require("./routes/auth");
-const preferenceRoutes = require("./routes/preferences");
+const authRoutes = require("../routes/auth");
+const preferenceRoutes = require("../routes/preferences");
 const cors = require("cors");
 const axios = require("axios");
-const mealPlanRoutes = require("./routes/mealPlanRoutes");
-const recipeRoutes = require("./routes/recipeRoutes");
-const shoppingListRoutes = require("./routes/shoppingListRoutes");
-const savedRecipesRoutes = require("./routes/savedRecipe");
-const progressRoutes = require("./routes/progress");
+const mealPlanRoutes = require("../routes/mealPlanRoutes");
+const recipeRoutes = require("../routes/recipeRoutes");
+const shoppingListRoutes = require("../routes/shoppingListRoutes");
+const savedRecipesRoutes = require("../routes/savedRecipe");
+const progressRoutes = require("../routes/progress");
 
 dotenv.config();
 
