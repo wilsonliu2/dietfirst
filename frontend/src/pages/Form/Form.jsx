@@ -12,7 +12,6 @@ import Final from "./steps/Final";
 import Nutrients from "./steps/Nutrients";
 import AllergyRestrictions from "./steps/AllergyRestrictions";
 
-
 function FormContent() {
   const [currentStep, setCurrentStep] = useState(1);
   const { userData } = useStepperContext();
@@ -59,7 +58,7 @@ function FormContent() {
           console.log("SENDING TO BACKEND NOW");
 
           // Register the user
-          const registerResponse = await fetch(`${API_URL}/auth/register`, {
+          const registerResponse = await fetch(`${API_URL}/api/auth/register`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -120,38 +119,35 @@ function FormContent() {
 
   return (
     <div>
- <div className="mx-auto rounded-2xl pb-2 bg-white shadow-xl mb-20 md:w-3/4 mt-32">
-      <Navbar></Navbar>
-      {/* Stepper Container */}
-      <div className="flex">
-        {/* Stepper */}
+      <div className="mx-auto mb-20 mt-32 rounded-2xl bg-white pb-2 shadow-xl md:w-3/4">
+        <Navbar></Navbar>
+        {/* Stepper Container */}
         <div className="flex">
-          <Stepper steps={steps} currentStep={currentStep} />
+          {/* Stepper */}
+          <div className="flex">
+            <Stepper steps={steps} currentStep={currentStep} />
+          </div>
+
+          {/* Step Content */}
+          <div className="my-10 flex-grow p-10">{displayStep(currentStep)}</div>
         </div>
 
-        {/* Step Content */}
-        <div className="my-10 p-10 flex-grow">{displayStep(currentStep)}</div>
+        {/* Display error message */}
+        {error && <div className="mb-4 text-center text-red-500">{error}</div>}
+
+        {/* Navigation buttons */}
+        {currentStep !== steps.length && (
+          <StepperControl
+            handleClick={handleClick}
+            currentStep={currentStep}
+            steps={steps}
+            loading={loading}
+          />
+        )}
       </div>
 
-      {/* Display error message */}
-      {error && <div className="text-red-500 text-center mb-4">{error}</div>}
-
-      {/* Navigation buttons */}
-      {currentStep !== steps.length && (
-        <StepperControl
-          handleClick={handleClick}
-          currentStep={currentStep}
-          steps={steps}
-          loading={loading}
-        />
-      )}
-                  
+      <Footer></Footer>
     </div>
-   
-   <Footer></Footer>
-
-    </div>
-
   );
 }
 
