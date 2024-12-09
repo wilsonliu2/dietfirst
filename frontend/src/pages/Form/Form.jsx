@@ -145,8 +145,6 @@ function FormContent() {
           />
         )}
       </div>
-
-      <Footer></Footer>
     </div>
   );
 }
