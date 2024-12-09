@@ -22,18 +22,33 @@ const app = express();
 // CORS
 app.use(
   cors({
-    origin: "*",
+    origin: "https://dietfirst-frontend.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
+// Allow preflight requests
+app.options("*", cors());
+
+app.options("*", (req, res) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://dietfirst-frontend.vercel.app"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.sendStatus(204);
+});
+
 app.get("/", (req, res) => {
   res.send("backend is running");
 });
-
-// Allow preflight requests
-app.options("*", cors());
 
 app.use(express.json());
 
