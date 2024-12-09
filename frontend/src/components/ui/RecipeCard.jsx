@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RecipeCard = ({ recipe, mealType, showSaveButton = true }) => {
   const [showMoreIngredients, setShowMoreIngredients] = useState(false);
@@ -39,15 +39,16 @@ const RecipeCard = ({ recipe, mealType, showSaveButton = true }) => {
         calories: Math.round(recipe.recipe.calories),
         uri: recipe.recipe.uri,
       };
+      const API_URL = import.meta.env.VITE_API_URL;
 
       const response = await axios.post(
-        "http://localhost:3000/api/recipes/save",
+        `${API_URL}/api/recipes/save`,
         recipeData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (response.status === 201) {
@@ -58,7 +59,10 @@ const RecipeCard = ({ recipe, mealType, showSaveButton = true }) => {
         toast.error("Failed to save recipe.");
       }
     } catch (error) {
-      console.error("Error saving recipe:", error.response?.data || error.message);
+      console.error(
+        "Error saving recipe:",
+        error.response?.data || error.message,
+      );
       setSaveMessage("Error saving recipe.");
       toast.error("Error saving recipe.");
     }

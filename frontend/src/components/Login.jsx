@@ -19,14 +19,12 @@ function Login({ onLogin }) {
     try {
       setError("");
       console.log("Attempting login with:", { email, password });
+      const API_URL = import.meta.env.VITE_API_URL;
 
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
-        {
-          email,
-          password,
-        },
-      );
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
+        email,
+        password,
+      });
 
       console.log("Login response:", response.data);
 

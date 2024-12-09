@@ -14,10 +14,11 @@ const NutritionAnalyzer = () => {
   const addIngredientField = () => {
     setIngredients([...ingredients, ""]);
   };
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const analyzeNutrition = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/analyze", {
+      const response = await axios.post(`${API_URL}/api/analyze`, {
         ingredients,
       });
       setNutritionData(response.data);

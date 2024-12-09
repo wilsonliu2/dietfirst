@@ -27,9 +27,10 @@ function MealPlanner() {
       const token = localStorage.getItem("token");
 
       console.log("Preferences being sent:", preferences);
+      const API_URL = import.meta.env.VITE_API_URL;
 
       const response = await axios.post(
-        "http://localhost:3000/api/mealplan/create",
+        `${API_URL}/api/mealplan/create`,
         {
           startDate,
           endDate,
@@ -179,9 +180,10 @@ function MealPlanner() {
 
           const recipePromises = recipeIds.map((item) => {
             const recipeId = item.assignedUri.split("#recipe_")[1];
+            const API_URL = import.meta.env.VITE_API_URL;
 
             return axios
-              .get(`http://localhost:3000/api/mealplan/recipe/${recipeId}`, {
+              .get(`${API_URL}/api/mealplan/recipe/${recipeId}`, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
@@ -219,136 +221,145 @@ function MealPlanner() {
   }, [organizedPlan]);
 
   return (
-    <div className="mx-auto max-w-8xl p-6 mt-[64px] bg-gray-50 py-28">
+    <div className="max-w-8xl mx-auto mt-[64px] bg-gray-50 p-6 py-28">
       <div className="mx-auto max-w-4xl">
-      <h2 className="mb-6 text-3xl uppercasetext-center font-bold text-center text-grey border-b-2 border-black pb-2">
+        <h2 className="uppercasetext-center text-grey mb-6 border-b-2 border-black pb-2 text-center text-3xl font-bold">
           Generate A Meal Plan
         </h2>
-      <form className="mb-6 rounded-lg bg-gray-100 p-6">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div>
-            <label className="mb-1 block font-medium">Start Date:</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-              className="w-full rounded-lg border border-gray-300 p-2"
-            />
+        <form className="mb-6 rounded-lg bg-gray-100 p-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div>
+              <label className="mb-1 block font-medium">Start Date:</label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                required
+                className="w-full rounded-lg border border-gray-300 p-2"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block font-medium">End Date:</label>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                required
+                className="w-full rounded-lg border border-gray-300 p-2"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block font-medium">Calories:</label>
+              <input
+                type="number"
+                value={calories}
+                onChange={(e) => setCalories(e.target.value)}
+                placeholder="Calories"
+                className="w-full rounded-lg border border-gray-300 p-2"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block font-medium">Diet:</label>
+              <input
+                type="text"
+                value={diet}
+                onChange={(e) => setDiet(e.target.value)}
+                placeholder="Diet (e.g., balanced, high-protein)"
+                className="w-full rounded-lg border border-gray-300 p-2"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block font-medium">Health Labels:</label>
+              <input
+                type="text"
+                value={health}
+                onChange={(e) => setHealth(e.target.value)}
+                placeholder="Health Labels (comma-separated)"
+                className="w-full rounded-lg border border-gray-300 p-2"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block font-medium">Cuisine Type:</label>
+              <input
+                type="text"
+                value={cuisineType}
+                onChange={(e) => setCuisineType(e.target.value)}
+                placeholder="Cuisine Type (comma-separated)"
+                className="w-full rounded-lg border border-gray-300 p-2"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="mb-1 block font-medium">Meal Types:</label>
+              <input
+                type="text"
+                value={mealTypes}
+                onChange={(e) => setMealTypes(e.target.value)}
+                placeholder="Meal Types (e.g., Breakfast, Lunch, Dinner)"
+                className="w-full rounded-lg border border-gray-300 p-2"
+              />
+            </div>
           </div>
-          <div>
-            <label className="mb-1 block font-medium">End Date:</label>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              required
-              className="w-full rounded-lg border border-gray-300 p-2"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block font-medium">Calories:</label>
-            <input
-              type="number"
-              value={calories}
-              onChange={(e) => setCalories(e.target.value)}
-              placeholder="Calories"
-              className="w-full rounded-lg border border-gray-300 p-2"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block font-medium">Diet:</label>
-            <input
-              type="text"
-              value={diet}
-              onChange={(e) => setDiet(e.target.value)}
-              placeholder="Diet (e.g., balanced, high-protein)"
-              className="w-full rounded-lg border border-gray-300 p-2"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block font-medium">Health Labels:</label>
-            <input
-              type="text"
-              value={health}
-              onChange={(e) => setHealth(e.target.value)}
-              placeholder="Health Labels (comma-separated)"
-              className="w-full rounded-lg border border-gray-300 p-2"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block font-medium">Cuisine Type:</label>
-            <input
-              type="text"
-              value={cuisineType}
-              onChange={(e) => setCuisineType(e.target.value)}
-              placeholder="Cuisine Type (comma-separated)"
-              className="w-full rounded-lg border border-gray-300 p-2"
-            />
-          </div>
-          <div className="md:col-span-2">
-            <label className="mb-1 block font-medium">Meal Types:</label>
-            <input
-              type="text"
-              value={mealTypes}
-              onChange={(e) => setMealTypes(e.target.value)}
-              placeholder="Meal Types (e.g., Breakfast, Lunch, Dinner)"
-              className="w-full rounded-lg border border-gray-300 p-2"
-            />
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={createMealPlan}
-          disabled={loading}
-          className={`mt-4 rounded-lg px-4 py-2 text-white ${
-            loading ? "cursor-not-allowed bg-gray-500" : "bg-cyan-600"
-          }`}
-        >
-          {loading ? "Generating..." : "Generate Meal Plan"}
-        </button>
-      </form>
+          <button
+            type="button"
+            onClick={createMealPlan}
+            disabled={loading}
+            className={`mt-4 rounded-lg px-4 py-2 text-white ${
+              loading ? "cursor-not-allowed bg-gray-500" : "bg-cyan-600"
+            }`}
+          >
+            {loading ? "Generating..." : "Generate Meal Plan"}
+          </button>
+        </form>
       </div>
 
       {error && <p className="mb-4 text-red-500">{error}</p>}
       {organizedPlan && (
-  <div className="meal-plan-details max-w-screen-lg mx-auto px-4 py-8">
-    <h3 className="mb-6 text-3xl font-bold text-gray-800 text-center">Meal Plan Details:</h3>
-    {organizedPlan.map((day, index) => (
-      <div key={index} className="mb-12">
-        <h4 className="mb-4 text-2xl font-semibold text-gray-700">Day {day.dayIndex + 1}</h4>
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 w-full">
-          {day.meals.map((meal, idx) => {
-            const recipe = recipesByUri[meal.assignedUri];
-            console.log("Rendering recipe:", recipe);
-            
-            // Check if recipe exists
-            if (!recipe) {
-              return (
-                <div key={idx} className="w-full flex justify-center min-h-48 max-h-screen">
-                  <div>Recipe not found for this meal</div>
-                </div>
-              ); // Render a fallback UI if recipe is not found
-            }
+        <div className="meal-plan-details mx-auto max-w-screen-lg px-4 py-8">
+          <h3 className="mb-6 text-center text-3xl font-bold text-gray-800">
+            Meal Plan Details:
+          </h3>
+          {organizedPlan.map((day, index) => (
+            <div key={index} className="mb-12">
+              <h4 className="mb-4 text-2xl font-semibold text-gray-700">
+                Day {day.dayIndex + 1}
+              </h4>
+              <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
+                {day.meals.map((meal, idx) => {
+                  const recipe = recipesByUri[meal.assignedUri];
+                  console.log("Rendering recipe:", recipe);
 
-            return (
-              <div key={idx} className="w-full flex justify-center min-h-48 max-h-screen">
-                <div>
-                  <RecipeCard
-                    key={idx}
-                    recipe={recipe}  // Pass the valid recipe
-                    mealType={meal.mealType}
-                  />
-                </div>
+                  // Check if recipe exists
+                  if (!recipe) {
+                    return (
+                      <div
+                        key={idx}
+                        className="flex max-h-screen min-h-48 w-full justify-center"
+                      >
+                        <div>Recipe not found for this meal</div>
+                      </div>
+                    ); // Render a fallback UI if recipe is not found
+                  }
+
+                  return (
+                    <div
+                      key={idx}
+                      className="flex max-h-screen min-h-48 w-full justify-center"
+                    >
+                      <div>
+                        <RecipeCard
+                          key={idx}
+                          recipe={recipe} // Pass the valid recipe
+                          mealType={meal.mealType}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
-      </div>
-    ))}
-  </div>
-)}
-
+      )}
     </div>
   );
 }

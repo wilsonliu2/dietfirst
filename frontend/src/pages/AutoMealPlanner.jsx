@@ -18,15 +18,13 @@ function AutoMealPlanner() {
           setError("User not authenticated. Please log in.");
           return;
         }
+        const API_URL = import.meta.env.VITE_API_URL;
 
-        const response = await axios.get(
-          "http://localhost:3000/api/preferences/my",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await axios.get(`${API_URL}/api/preferences/my`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
 
         const userPrefs = response.data;
         const healthLabels = userPrefs.allergyRestrictions.map((h) =>
@@ -94,9 +92,10 @@ function AutoMealPlanner() {
         const endDateObj = new Date();
         endDateObj.setDate(endDateObj.getDate() + 6);
         const endDate = endDateObj.toISOString().split("T")[0];
+        const API_URL = import.meta.env.VITE_API_URL;
 
         const response = await axios.post(
-          "http://localhost:3000/api/mealplan/create",
+          `${API_URL}/api/mealplan/create`,
           {
             startDate,
             endDate,
@@ -168,8 +167,10 @@ function AutoMealPlanner() {
 
         const recipePromises = recipeIds.map((item) => {
           const recipeId = item.assignedUri.split("#recipe_")[1];
+          const API_URL = import.meta.env.VITE_API_URL;
+
           return axios
-            .get(`http://localhost:3000/api/mealplan/recipe/${recipeId}`, {
+            .get(`${API_URL}/api/mealplan/recipe/${recipeId}`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },

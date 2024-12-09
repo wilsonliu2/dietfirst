@@ -18,15 +18,13 @@ function AutoMealPlanner() {
           setError("User not authenticated. Please log in.");
           return;
         }
+        const API_URL = import.meta.env.VITE_API_URL;
 
-        const response = await axios.get(
-          "http://localhost:3000/api/preferences/my",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await axios.get(`${API_URL}/api/preferences/my`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
 
         const userPrefs = response.data;
         const healthLabels = userPrefs.allergyRestrictions.map((h) =>
@@ -101,9 +99,10 @@ function AutoMealPlanner() {
         const endDateObj = new Date();
         endDateObj.setDate(endDateObj.getDate() + 1);
         const endDate = endDateObj.toISOString().split("T")[0];
+        const API_URL = import.meta.env.VITE_API_URL;
 
         const response = await axios.post(
-          "http://localhost:3000/api/mealplan/create",
+          `${API_URL}/api/mealplan/create`,
           {
             startDate,
             endDate,
@@ -172,11 +171,12 @@ function AutoMealPlanner() {
           setError("User not authenticated. Please log in.");
           return;
         }
+        const API_URL = import.meta.env.VITE_API_URL;
 
         const recipePromises = recipeIds.map((item) => {
           const recipeId = item.assignedUri.split("#recipe_")[1];
           return axios
-            .get(`http://localhost:3000/api/mealplan/recipe/${recipeId}`, {
+            .get(`${API_URL}/api/mealplan/recipe/${recipeId}`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -205,8 +205,7 @@ function AutoMealPlanner() {
   }, [organizedPlan]);
 
   return (
-    
-    <div className="max-w-8xl mx-auto p-6 pt-32 bg-gray-100">
+    <div className="max-w-8xl mx-auto bg-gray-100 p-6 pt-32">
       <div className="mx-auto max-w-4xl">
         {loading && <p>Generating your meal plan...</p>}
         {error && <p className="mb-4 text-red-500">{error}</p>}
@@ -214,12 +213,12 @@ function AutoMealPlanner() {
 
       {organizedPlan && (
         <div className="meal-plan-details mx-auto max-w-screen-lg px-4 py-8">
-          <h2 className="mb-6 text-3xl uppercasetext-center font-bold text-center text-grey border-b-2 border-black pb-2">
-          Your Personalized Meal Plan 
-        </h2>
+          <h2 className="uppercasetext-center text-grey mb-6 border-b-2 border-black pb-2 text-center text-3xl font-bold">
+            Your Personalized Meal Plan
+          </h2>
           {organizedPlan.map((day, index) => (
             <div key={index} className="mb-12">
-              <h4 className="mb-4 text-2xl font-semibold text-black uppercase">
+              <h4 className="mb-4 text-2xl font-semibold uppercase text-black">
                 Day {day.dayIndex + 1}
               </h4>
               <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">

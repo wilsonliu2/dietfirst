@@ -4,10 +4,11 @@ import axios from "axios";
 const RecipeSearch = () => {
   const [query, setQuery] = useState("");
   const [recipes, setRecipes] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const fetchRecipes = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/recipes", {
+      const response = await axios.get(`${API_URL}/api/recipes`, {
         params: { query },
       });
       setRecipes(response.data.hits || response.data.results || []);

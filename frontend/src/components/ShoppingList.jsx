@@ -4,12 +4,13 @@ import axios from "axios";
 function ShoppingList({ meals }) {
   const [shoppingList, setShoppingList] = useState(null);
   const [error, setError] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const generateShoppingList = async () => {
     try {
       setError("");
       const response = await axios.post(
-        "http://localhost:3000/api/shoppinglist/generate",
+        `${API_URL}/api/shoppinglist/generate`,
         {
           meals,
         },
