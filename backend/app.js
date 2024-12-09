@@ -22,7 +22,7 @@ const app = express();
 // CORS
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://dietfirst-frontend.vercel.app"],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
